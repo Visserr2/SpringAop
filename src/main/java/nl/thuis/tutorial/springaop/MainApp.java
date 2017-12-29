@@ -4,6 +4,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import nl.thuis.tutorial.springaop.config.SpringConfig;
 import nl.thuis.tutorial.springaop.repository.AccountRepository;
+import nl.thuis.tutorial.springaop.repository.MembershipRepository;
 
 public class MainApp {
 
@@ -13,10 +14,12 @@ public class MainApp {
 		AnnotationConfigApplicationContext config = new AnnotationConfigApplicationContext(SpringConfig.class);
 		
 		// Get bean from context
-		AccountRepository repository = config.getBean("accountRepository", AccountRepository.class);
+		AccountRepository accountRepository = config.getBean("accountRepository", AccountRepository.class);
+		MembershipRepository membershiprepository = config.getBean("membershipRepository", MembershipRepository.class);
 	
 		// Use method from repository
-		repository.addAccount();
+		accountRepository.addAccount();
+		membershiprepository.addAccount();
 		
 		// Closing context
 		config.close();
