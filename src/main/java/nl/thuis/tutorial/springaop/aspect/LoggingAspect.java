@@ -41,4 +41,21 @@ public class LoggingAspect {
 	public void beforeAddMethodsWithReturnStringAdvice() {
 		System.out.println("This is executed before every 'add'-method that returns a String in every class");
 	}
+		
+	/**
+	 * Start this advice before every method that start with "add" and has an Account-param every class
+	 * The ".." is match to zero or more params of any type
+	 */
+	@Before("execution(* add*(nl.thuis.tutorial.springaop.bean.Account, ..) )") // The parameter is called a pointcut
+	public void beforeAddMethodsWithParamAdvice() {
+		System.out.println("This is executed before every 'add'-method with Account Param in every class");
+	}
+	
+	/**
+	 * Start this advice before every method in the repository package
+	 */
+	@Before("execution(* nl.thuis.tutorial.springaop.repository.*.*(..) )") // The parameter is called a pointcut
+	public void beforeAddMethodsInPackageAdvice() {
+		System.out.println("This is executed before every 'add'-method within a package");
+	}
 }

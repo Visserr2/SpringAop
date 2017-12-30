@@ -2,6 +2,7 @@ package nl.thuis.tutorial.springaop;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import nl.thuis.tutorial.springaop.bean.Account;
 import nl.thuis.tutorial.springaop.config.SpringConfig;
 import nl.thuis.tutorial.springaop.repository.AccountRepository;
 import nl.thuis.tutorial.springaop.repository.MembershipRepository;
@@ -19,6 +20,7 @@ public class MainApp {
 	
 		// Use method from repository
 		accountRepository.addAccount();
+		accountRepository.addAccount(new Account());
 		membershiprepository.addAccount();
 		
 		// Closing context
