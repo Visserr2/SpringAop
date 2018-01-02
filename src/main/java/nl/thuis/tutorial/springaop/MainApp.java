@@ -21,6 +21,13 @@ public class MainApp {
 		// Use method from repository
 		accountRepository.addAccount();
 		accountRepository.addAccount(new Account());
+		
+		accountRepository.setName("Ronald");
+		accountRepository.setServiceCode("Dit is een service");
+		
+		accountRepository.getName();
+		accountRepository.getServiceCode();
+		
 		membershiprepository.addAccount();
 		
 		// Closing context

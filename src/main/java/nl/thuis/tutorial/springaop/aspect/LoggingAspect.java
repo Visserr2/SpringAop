@@ -16,6 +16,15 @@ public class LoggingAspect {
 	@Pointcut("execution(* nl.thuis.tutorial.springaop.repository.*.*(..) )")
 	private void executeBeforeEveryMethodInRepositoryPackage() {}
 	
+	@Pointcut("execution(* nl.thuis.tutorial.springaop.repository.*.get*(..) )")
+	private void executeBeforeEveryGetMethodInRepositoryPackage() {}
+	
+	@Pointcut("execution(* nl.thuis.tutorial.springaop.repository.*.set*(..) )")
+	private void executeBeforeEverySetMethodInRepositoryPackage() {}
+	
+	@Pointcut("executeBeforeEveryMethodInRepositoryPackage() && !(executeBeforeEveryGetMethodInRepositoryPackage() || executeBeforeEverySetMethodInRepositoryPackage())")
+	private void executeBeforeEveryMethodExceptGetAndSetInRepositoryPackage() {}
+	
 	// Advice declerations with pointcut-expressions
 	/**
 	 * Start this advice before every "public void addAccount()"-method in any class
@@ -64,7 +73,15 @@ public class LoggingAspect {
 	 * Start this advice before every method in the repository package
 	 */
 	@Before("executeBeforeEveryMethodInRepositoryPackage()") // The parameter is called a pointcut-method decleration
-	public void beforeAddMethodsInPackageAdvice() {
-		System.out.println("This is executed before every 'add'-method within a package");
+	public void beforeEveryMethodsInPackageAdvice() {
+		System.out.println("This is executed before every method within a package");
+	}
+	
+	/**
+	 * Start this advice before every method in the repository package except in getters and setters
+	 */
+	@Before("executeBeforeEveryMethodExceptGetAndSetInRepositoryPackage()") // The parameter is called a pointcut-method decleration
+	public void beforeEveryMethodsExceptGetAndSetInPackageAdvice() {
+		System.out.println("This is executed before every method within a package except in getters and setters");
 	}
 }
