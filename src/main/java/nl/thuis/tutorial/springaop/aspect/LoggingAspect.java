@@ -2,6 +2,7 @@ package nl.thuis.tutorial.springaop.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -10,6 +11,12 @@ public class LoggingAspect {
 
 	// In the aspect all the related advices (methods) are stored
 	
+	// Pointcut declerations
+	
+	@Pointcut("execution(* nl.thuis.tutorial.springaop.repository.*.*(..) )")
+	private void executeBeforeEveryMethodInRepositoryPackage() {}
+	
+	// Advice declerations with pointcut-expressions
 	/**
 	 * Start this advice before every "public void addAccount()"-method in any class
 	 */
@@ -51,10 +58,12 @@ public class LoggingAspect {
 		System.out.println("This is executed before every 'add'-method with Account Param in every class");
 	}
 	
+	// Advices with pointcut-method decleration
+	
 	/**
 	 * Start this advice before every method in the repository package
 	 */
-	@Before("execution(* nl.thuis.tutorial.springaop.repository.*.*(..) )") // The parameter is called a pointcut
+	@Before("executeBeforeEveryMethodInRepositoryPackage()") // The parameter is called a pointcut-method decleration
 	public void beforeAddMethodsInPackageAdvice() {
 		System.out.println("This is executed before every 'add'-method within a package");
 	}
