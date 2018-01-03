@@ -3,13 +3,16 @@ package nl.thuis.tutorial.springaop.aspect;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Order(2) // define the order in relation to the other aspects
 public class LoggingAspect {
 
-	// In the aspect all the related advices (methods) are stored
+	// In the aspect all the related advices (methods) are stored. For every unrelated advice create a new aspect
+	// You can order the aspects-classes via the @Order annotation
 	
 	// Pointcut declerations
 	
@@ -31,41 +34,8 @@ public class LoggingAspect {
 	 */
 	@Before("execution(public void addAccount())") // The parameter is called a pointcut
 	public void beforeAddAccountAdvice() {
-		System.out.println("This is executed before addAccount-method");
-	}
-	
-	/**
-	 * Start this advice before "public void addAccount()"-method in AccountRepository
-	 */
-	@Before("execution(public void nl.thuis.tutorial.springaop.repository.AccountRepository.addAccount())") // The parameter is called a pointcut
-	public void beforeAccountRepositoryAddAccountAdvice() {
-		System.out.println("This is executed before addAccount-method in AccountRepository");
-	}
-	
-	/**
-	 * Start this advice before every method that start with "add" every class
-	 */
-	@Before("execution(* add*() )") // The parameter is called a pointcut
-	public void beforeAddMethodsAdvice() {
-		System.out.println("This is executed before every 'add'-method in every class");
-	}
-	
-	/**
-	 * Start this advice before every method that start with "add" and returns a String every class
-	 */
-	@Before("execution(String add*() )") // The parameter is called a pointcut
-	public void beforeAddMethodsWithReturnStringAdvice() {
-		System.out.println("This is executed before every 'add'-method that returns a String in every class");
-	}
-		
-	/**
-	 * Start this advice before every method that start with "add" and has an Account-param every class
-	 * The ".." is match to zero or more params of any type
-	 */
-	@Before("execution(* add*(nl.thuis.tutorial.springaop.bean.Account, ..) )") // The parameter is called a pointcut
-	public void beforeAddMethodsWithParamAdvice() {
-		System.out.println("This is executed before every 'add'-method with Account Param in every class");
-	}
+		System.out.println("----LOGGING----- This is executed before addAccount-method");
+	}		
 	
 	// Advices with pointcut-method decleration
 	
@@ -74,7 +44,7 @@ public class LoggingAspect {
 	 */
 	@Before("executeBeforeEveryMethodInRepositoryPackage()") // The parameter is called a pointcut-method decleration
 	public void beforeEveryMethodsInPackageAdvice() {
-		System.out.println("This is executed before every method within a package");
+		System.out.println("----LOGGING----- This is executed before every method within a package");
 	}
 	
 	/**
@@ -82,6 +52,6 @@ public class LoggingAspect {
 	 */
 	@Before("executeBeforeEveryMethodExceptGetAndSetInRepositoryPackage()") // The parameter is called a pointcut-method decleration
 	public void beforeEveryMethodsExceptGetAndSetInPackageAdvice() {
-		System.out.println("This is executed before every method within a package except in getters and setters");
+		System.out.println("----LOGGING----- This is executed before every method within a package except in getters and setters");
 	}
 }
