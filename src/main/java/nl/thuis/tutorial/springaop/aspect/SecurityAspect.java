@@ -18,6 +18,7 @@ public class SecurityAspect {
 	/**
 	 * Start this advice before every method that start with "add" every class
 	 */
+	@Order(1)	// Define order of methods in relation to other methods within the aspect
 	@Before("execution(* add*() )") // The parameter is called a pointcut
 	public void beforeAddMethodsAdvice() {
 		System.out.println("----SECURITY----- This is executed before every 'add'-method in every class");
@@ -26,6 +27,7 @@ public class SecurityAspect {
 	/**
 	 * Start this advice before "public void addAccount()"-method in AccountRepository
 	 */
+	@Order(2)	// Define order of methods in relation to other methods within the aspect
 	@Before("execution(public void nl.thuis.tutorial.springaop.repository.AccountRepository.addAccount())") // The parameter is called a pointcut
 	public void beforeAccountRepositoryAddAccountAdvice() {
 		System.out.println("----SECURITY----- This is executed before addAccount-method in AccountRepository");

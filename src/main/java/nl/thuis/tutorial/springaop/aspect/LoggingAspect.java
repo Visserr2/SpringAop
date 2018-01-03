@@ -40,18 +40,21 @@ public class LoggingAspect {
 	// Advices with pointcut-method decleration
 	
 	/**
+	 * Start this advice before every method in the repository package except in getters and setters
+	 */
+	@Order(1) // Define order of methods in relation to other methods within the aspect
+	@Before("executeBeforeEveryMethodExceptGetAndSetInRepositoryPackage()") // The parameter is called a pointcut-method decleration
+	public void beforeEveryMethodsExceptGetAndSetInPackageAdvice() {
+		System.out.println("----LOGGING----- This is executed before every method within a package except in getters and setters");
+	}
+	
+	/**
 	 * Start this advice before every method in the repository package
 	 */
+	@Order(2)	// Define order of methods in relation to other methods within the aspect
 	@Before("executeBeforeEveryMethodInRepositoryPackage()") // The parameter is called a pointcut-method decleration
 	public void beforeEveryMethodsInPackageAdvice() {
 		System.out.println("----LOGGING----- This is executed before every method within a package");
 	}
 	
-	/**
-	 * Start this advice before every method in the repository package except in getters and setters
-	 */
-	@Before("executeBeforeEveryMethodExceptGetAndSetInRepositoryPackage()") // The parameter is called a pointcut-method decleration
-	public void beforeEveryMethodsExceptGetAndSetInPackageAdvice() {
-		System.out.println("----LOGGING----- This is executed before every method within a package except in getters and setters");
-	}
 }

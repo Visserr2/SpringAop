@@ -19,6 +19,7 @@ public class MailingAspect {
 	 * Start this advice before every method that start with "add" and has an Account-param every class
 	 * The ".." is match to zero or more params of any type
 	 */
+	@Order(1) // Define order of methods in relation to other methods within the aspect
 	@Before("execution(* add*(nl.thuis.tutorial.springaop.bean.Account, ..) )") // The parameter is called a pointcut
 	public void beforeAddMethodsWithParamAdvice() {
 		System.out.println("----MAILING----- This is executed before every 'add'-method with Account Param in every class");
@@ -27,6 +28,7 @@ public class MailingAspect {
 	/**
 	 * Start this advice before every method that start with "add" and returns a String every class
 	 */
+	@Order(2) // Define order of methods in relation to other methods within the aspect
 	@Before("execution(String add*() )") // The parameter is called a pointcut
 	public void beforeAddMethodsWithReturnStringAdvice() {
 		System.out.println("----MAILING----- This is executed before every 'add'-method that returns a String in every class");
