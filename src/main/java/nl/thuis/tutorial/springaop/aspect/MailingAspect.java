@@ -16,6 +16,12 @@ public class MailingAspect {
 	
 	// In the aspect all the related advices (methods) are stored. For every unrelated advice create a new aspect
 	// You can order the aspects-classes via the @Order annotation
+
+	// @Before - runs before the method
+	// @AfterReturning - runs after the method is successfully executed
+	// @AfterThrowing - Runs after the method throws exception
+	// @After - Runs after the method is executed
+	// @Around - Runs before and after the method
 	
 	// Advice declerations with pointcut-expressions
 	
