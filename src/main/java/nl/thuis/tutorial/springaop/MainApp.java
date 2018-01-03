@@ -20,7 +20,7 @@ public class MainApp {
 	
 		// Use method from repository
 		accountRepository.addAccount();
-		accountRepository.addAccount(new Account());
+		accountRepository.addAccount(new Account("Ronald"));
 		
 		accountRepository.setName("Ronald");
 		accountRepository.setServiceCode("Dit is een service");

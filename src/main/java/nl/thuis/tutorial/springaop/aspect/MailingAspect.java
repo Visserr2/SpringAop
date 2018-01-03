@@ -1,9 +1,13 @@
 package nl.thuis.tutorial.springaop.aspect;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import nl.thuis.tutorial.springaop.bean.Account;
 
 @Aspect
 @Component
@@ -18,11 +22,23 @@ public class MailingAspect {
 	/**
 	 * Start this advice before every method that start with "add" and has an Account-param every class
 	 * The ".." is match to zero or more params of any type
+	 * The joinPoint gives metadata about the method. i.e. method signature and method params
 	 */
 	@Order(1) // Define order of methods in relation to other methods within the aspect
 	@Before("execution(* add*(nl.thuis.tutorial.springaop.bean.Account, ..) )") // The parameter is called a pointcut
-	public void beforeAddMethodsWithParamAdvice() {
-		System.out.println("----MAILING----- This is executed before every 'add'-method with Account Param in every class");
+	public void beforeAddMethodsWithParamAdvice(JoinPoint joinPoint) {
+		MethodSignature sig = (MethodSignature) joinPoint.getSignature();
+		
+		// get params, if any
+		Object[] params = joinPoint.getArgs();
+		// loop through params and check for account param
+		for(Object object: params) {
+			if(object instanceof Account) {
+				Account account = (Account) object;
+				System.out.println(account.getName());
+			}
+		}	
+		System.out.println("----MAILING-----|" + sig + "| This is executed before every 'add'-method with Account Param in every class");
 	}
 	
 	/**

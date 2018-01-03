@@ -1,9 +1,13 @@
 package nl.thuis.tutorial.springaop.aspect;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import nl.thuis.tutorial.springaop.bean.Account;
 
 @Aspect
 @Component
@@ -17,11 +21,25 @@ public class SecurityAspect {
 	
 	/**
 	 * Start this advice before every method that start with "add" every class
+	 * The joinPoint gives metadata about the method. i.e. method signature and method params
 	 */
 	@Order(1)	// Define order of methods in relation to other methods within the aspect
 	@Before("execution(* add*() )") // The parameter is called a pointcut
-	public void beforeAddMethodsAdvice() {
-		System.out.println("----SECURITY----- This is executed before every 'add'-method in every class");
+	public void beforeAddMethodsAdvice(JoinPoint joinPoint) {
+		// Get method signature
+		MethodSignature sig = (MethodSignature) joinPoint.getSignature();
+
+		// get params, if any
+		Object[] params = joinPoint.getArgs();
+		// loop through params and check for account param
+		for(Object object: params) {
+			if(object instanceof Account) {
+				Account account = (Account) object;
+				System.out.println(account.getName());
+			}
+		}
+
+		System.out.println("----SECURITY----- |" + sig + "| This is executed before every 'add'-method in every class");
 	}
 	
 	/**
