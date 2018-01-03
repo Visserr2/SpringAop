@@ -2,7 +2,6 @@ package nl.thuis.tutorial.springaop.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -13,20 +12,6 @@ public class LoggingAspect {
 
 	// In the aspect all the related advices (methods) are stored. For every unrelated advice create a new aspect
 	// You can order the aspects-classes via the @Order annotation
-	
-	// Pointcut declerations
-	
-	@Pointcut("execution(* nl.thuis.tutorial.springaop.repository.*.*(..) )")
-	private void executeBeforeEveryMethodInRepositoryPackage() {}
-	
-	@Pointcut("execution(* nl.thuis.tutorial.springaop.repository.*.get*(..) )")
-	private void executeBeforeEveryGetMethodInRepositoryPackage() {}
-	
-	@Pointcut("execution(* nl.thuis.tutorial.springaop.repository.*.set*(..) )")
-	private void executeBeforeEverySetMethodInRepositoryPackage() {}
-	
-	@Pointcut("executeBeforeEveryMethodInRepositoryPackage() && !(executeBeforeEveryGetMethodInRepositoryPackage() || executeBeforeEverySetMethodInRepositoryPackage())")
-	private void executeBeforeEveryMethodExceptGetAndSetInRepositoryPackage() {}
 	
 	// Advice declerations with pointcut-expressions
 	/**
@@ -43,7 +28,7 @@ public class LoggingAspect {
 	 * Start this advice before every method in the repository package except in getters and setters
 	 */
 	@Order(1) // Define order of methods in relation to other methods within the aspect
-	@Before("executeBeforeEveryMethodExceptGetAndSetInRepositoryPackage()") // The parameter is called a pointcut-method decleration
+	@Before("nl.thuis.tutorial.springaop.aspect.PointcutDeclerations.executeBeforeEveryMethodExceptGetAndSetInRepositoryPackage()") // The parameter is called a pointcut-method decleration
 	public void beforeEveryMethodsExceptGetAndSetInPackageAdvice() {
 		System.out.println("----LOGGING----- This is executed before every method within a package except in getters and setters");
 	}
@@ -52,7 +37,7 @@ public class LoggingAspect {
 	 * Start this advice before every method in the repository package
 	 */
 	@Order(2)	// Define order of methods in relation to other methods within the aspect
-	@Before("executeBeforeEveryMethodInRepositoryPackage()") // The parameter is called a pointcut-method decleration
+	@Before("nl.thuis.tutorial.springaop.aspect.PointcutDeclerations.executeBeforeEveryMethodInRepositoryPackage()") // The parameter is called a pointcut-method decleration
 	public void beforeEveryMethodsInPackageAdvice() {
 		System.out.println("----LOGGING----- This is executed before every method within a package");
 	}
