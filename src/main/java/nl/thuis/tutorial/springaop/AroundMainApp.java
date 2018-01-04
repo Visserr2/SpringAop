@@ -1,11 +1,15 @@
 package nl.thuis.tutorial.springaop;
 
+import java.util.logging.Logger;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import nl.thuis.tutorial.springaop.config.SpringConfig;
 import nl.thuis.tutorial.springaop.service.TrafficFortuneService;
 
 public class AroundMainApp {
+	
+	private static Logger logger = Logger.getLogger(AroundMainApp.class.getName());
 
 	public static void main(String[] args) {
 
@@ -14,14 +18,14 @@ public class AroundMainApp {
 
 		// Get bean from context
 		TrafficFortuneService trafficFortune = config.getBean("trafficFortuneService", TrafficFortuneService.class);
-		System.out.println("Start AroundMainApp\n");
+		logger.info("Start AroundMainApp\n");
 		
 		// Calling getFortune
 		String data = trafficFortune.getFortune();
-		System.out.println(data);
+		logger.info(data);
 
 		// Closing context
-		System.out.println("\nEnding AroundMainApp");
+		logger.info("Ending AroundMainApp");
 		config.close();
 	}
 }

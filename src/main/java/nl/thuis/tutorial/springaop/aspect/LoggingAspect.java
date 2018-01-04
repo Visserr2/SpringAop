@@ -1,6 +1,7 @@
 package nl.thuis.tutorial.springaop.aspect;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -14,12 +15,15 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import nl.thuis.tutorial.springaop.AroundMainApp;
 import nl.thuis.tutorial.springaop.bean.Account;
 
 @Aspect
 @Component
 @Order(2) // define the order in relation to the other aspects
 public class LoggingAspect {
+	
+	private Logger logger = Logger.getLogger(LoggingAspect.class.getName());
 
 	// In the aspect all the related advices (methods) are stored. For every unrelated advice create a new aspect
 	// You can order the aspects-classes via the @Order annotation
@@ -36,7 +40,7 @@ public class LoggingAspect {
 	 */
 	@Before("execution(public void addAccount())") // The parameter is called a pointcut
 	public void beforeAddAccountAdvice() {
-		System.out.println("----LOGGING----- This is executed before addAccount-method");
+		logger.info("----LOGGING----- This is executed before addAccount-method");
 	}		
 	
 	// Advices with pointcut-method decleration
@@ -57,11 +61,11 @@ public class LoggingAspect {
 		for(Object object: params) {
 			if(object instanceof Account) {
 				Account account = (Account) object;
-				System.out.println(account.getName());
+				logger.info(account.getName());
 			}
 		}
 		
-		System.out.println("----LOGGING----- |" + sig +  "| This is executed before every method within a package except in getters and setters");		
+		logger.info("----LOGGING----- |" + sig +  "| This is executed before every method within a package except in getters and setters");		
 	}
 	
 	/**
@@ -70,7 +74,7 @@ public class LoggingAspect {
 	@Order(2)	// Define order of methods in relation to other methods within the aspect
 	@Before("nl.thuis.tutorial.springaop.aspect.PointcutDeclerations.executeBeforeEveryMethodInRepositoryPackage()") // The parameter is called a pointcut-method decleration
 	public void beforeEveryMethodsInPackageAdvice() {
-		System.out.println("----LOGGING----- This is executed before every method within a package");
+		logger.info("----LOGGING----- This is executed before every method within a package");
 	}
 	
 	//////// AFTER RETURNING ADVICE ////////////
@@ -86,9 +90,9 @@ public class LoggingAspect {
 	@AfterReturning(pointcut="execution(* nl.thuis.tutorial.springaop.repository.AccountRepository.findAccounts(..))", returning="result")
 	public void afterReturningFindAccountAdvice(JoinPoint joinPoint, List<Account> result) {
 		
-		System.out.println("LOGGING --> Executing After Method Successfully Advice: " + joinPoint.getSignature().toShortString());
+		logger.info("LOGGING --> Executing After Method Successfully Advice: " + joinPoint.getSignature().toShortString());
 		
-		System.out.println("LOGGING --> Executing After Method Successfully Advice: " + result);	
+		logger.info("LOGGING --> Executing After Method Successfully Advice: " + result);	
 		
 		// Change result from the method and gives new answer back to calling application
 		if(!result.isEmpty()) {
@@ -112,9 +116,9 @@ public class LoggingAspect {
 	@AfterThrowing(pointcut="execution(* nl.thuis.tutorial.springaop.repository.AccountRepository.findAccounts(..))", throwing="exception")
 	public void afterThrowingFindAccountAdvice(JoinPoint joinPoint, Throwable exception) {
 		
-		System.out.println("LOGGING --> Executing After Method Exception Advice: " + joinPoint.getSignature().toShortString());
+		logger.info("LOGGING --> Executing After Method Exception Advice: " + joinPoint.getSignature().toShortString());
 		
-		System.out.println("LOGGING --> Executing After Method Exception Advice: " + exception.getMessage());	
+		logger.info("LOGGING --> Executing After Method Exception Advice: " + exception.getMessage());	
 		
 	}
 	
@@ -130,7 +134,7 @@ public class LoggingAspect {
 	@After("execution(* nl.thuis.tutorial.springaop.repository.AccountRepository.findAccounts(..))")
 	public void afterFinallyFindAccountAdvice(JoinPoint joinPoint) {
 		
-		System.out.println("LOGGING --> Executing After Finally Method Advice: " + joinPoint.getSignature().toShortString());
+		logger.info("LOGGING --> Executing After Finally Method Advice: " + joinPoint.getSignature().toShortString());
 				
 	}
 	
@@ -139,7 +143,7 @@ public class LoggingAspect {
 	@Around("execution(* nl.thuis.tutorial.springaop.service.TrafficFortuneService.getFortune(..))")
 	public Object aroundGetFortune(ProceedingJoinPoint pjp) throws Throwable {
 		
-		System.out.println("LOGGING --> Executing AROUND Advice: " + pjp.getSignature().toShortString());
+		logger.info("LOGGING --> Executing AROUND Advice: " + pjp.getSignature().toShortString());
 		
 		long start = System.currentTimeMillis();
 		
@@ -149,7 +153,7 @@ public class LoggingAspect {
 		long end = System.currentTimeMillis();
 		
 		long time = end - start;
-		System.out.println("LOGGING --> Executing AROUND Advice: The method takes " + time / 1000.0 + " miliseconds!");
+		logger.info("LOGGING --> Executing AROUND Advice: The method takes " + time / 1000.0 + " miliseconds!");
 		
 		// return the result to calling object
 		return result;
