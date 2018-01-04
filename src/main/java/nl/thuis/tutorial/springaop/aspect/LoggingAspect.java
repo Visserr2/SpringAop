@@ -3,9 +3,11 @@ package nl.thuis.tutorial.springaop.aspect;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -95,6 +97,9 @@ public class LoggingAspect {
 		}
 	}
 	
+	//////// AFTER THROWING ADVICE ////////////
+
+	
 	/**
 	 * Start this advice after the findAccount-method throws an exception
 	 * The pointcut contains the expression when this advice should be executed
@@ -113,6 +118,8 @@ public class LoggingAspect {
 		
 	}
 	
+	//////// AFTER FINALLY ADVICE ////////////
+	
 	/**
 	 * Start this advice afther the findAccount-method regardless success or not
 	 * It is not possible to intercept the exception
@@ -123,8 +130,29 @@ public class LoggingAspect {
 	@After("execution(* nl.thuis.tutorial.springaop.repository.AccountRepository.findAccounts(..))")
 	public void afterFinallyFindAccountAdvice(JoinPoint joinPoint) {
 		
-		System.out.println("LOGGING --> Executing After Finally Method Exception Advice: " + joinPoint.getSignature().toShortString());
+		System.out.println("LOGGING --> Executing After Finally Method Advice: " + joinPoint.getSignature().toShortString());
 				
+	}
+	
+	//////// AROUND ADVICE ////////////
+
+	@Around("execution(* nl.thuis.tutorial.springaop.service.TrafficFortuneService.getFortune(..))")
+	public Object aroundGetFortune(ProceedingJoinPoint pjp) throws Throwable {
+		
+		System.out.println("LOGGING --> Executing AROUND Advice: " + pjp.getSignature().toShortString());
+		
+		long start = System.currentTimeMillis();
+		
+		// execute the method
+		Object result = pjp.proceed();
+		
+		long end = System.currentTimeMillis();
+		
+		long time = end - start;
+		System.out.println("LOGGING --> Executing AROUND Advice: The method takes " + time / 1000.0 + " miliseconds!");
+		
+		// return the result to calling object
+		return result;
 	}
 	
 	
