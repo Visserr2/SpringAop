@@ -1,6 +1,9 @@
 package nl.thuis.tutorial.springaop.aspect;
 
+import java.util.List;
+
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -65,5 +68,30 @@ public class LoggingAspect {
 	public void beforeEveryMethodsInPackageAdvice() {
 		System.out.println("----LOGGING----- This is executed before every method within a package");
 	}
+	
+	//////// AFTER RETURNING ADVICE ////////////
+	
+	/**
+	 * Start this advice after the findAccount-Method is successfully executed
+	 * The pointcut contains the expression when this advice should be executed
+	 * The returning contains the value that is returned by the method
+	 * The param that contains the returning value of the method must match the class-type and the returning variable
+	 * It is also possible to modify the return value. This way you can format or enrich the data. But this is not recommended
+	 * Every programmer needs to know about the AOP-modified value because else programmers think that the method is broken 
+	 */
+	@AfterReturning(pointcut="execution(* nl.thuis.tutorial.springaop.repository.AccountRepository.findAccounts(..))", returning="result")
+	public void afterReturningFindAccountAdvice(JoinPoint joinPoint, List<Account> result) {
+		
+		System.out.println("LOGGING --> Executing AfterReturning Advice: " + joinPoint.getSignature().toShortString());
+		
+		System.out.println("LOGGING --> Executing AfterReturning Advice: " + result);	
+		
+		// Change result from the method and gives new answer back to calling application
+		if(!result.isEmpty()) {
+			Account account = result.get(0);
+			account.setName("Daffy Duck");
+		}
+	}
+	
 	
 }

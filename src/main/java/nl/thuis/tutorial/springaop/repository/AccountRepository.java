@@ -1,5 +1,8 @@
 package nl.thuis.tutorial.springaop.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import nl.thuis.tutorial.springaop.bean.Account;
@@ -18,6 +21,17 @@ public class AccountRepository {
 	public void addAccount(Account account) {
 		
 		System.out.println(getClass() + " : Add Account to DB with Account Param");
+	}
+	
+	public List<Account> findAccounts() {
+		
+		List<Account> accounts = new ArrayList<>();
+		
+		accounts.add(new Account("Ronald", "Silver"));
+		accounts.add(new Account("Madu", "Platinum"));
+		accounts.add(new Account("Jeroen", "Gold"));
+		
+		return accounts;
 	}
 
 	public String getName() {
