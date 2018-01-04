@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -91,6 +92,23 @@ public class LoggingAspect {
 			Account account = result.get(0);
 			account.setName("Daffy Duck");
 		}
+	}
+	
+	/**
+	 * Start this advice after the findAccount-method throws an exception
+	 * The pointcut contains the expression when this advice should be executed
+	 * The throwing contains the variable with the exception
+	 * @param joinPoint contains metadata of the method (signature and params)
+	 * @param exception contains the exception that is thrown. This param must match with the throwing-variable
+	 * In AfterThrowing only the exception can be logged and seen. Use the AroundAdvice for catching and process the exception
+	 */
+	@AfterThrowing(pointcut="execution(* nl.thuis.tutorial.springaop.repository.AccountRepository.findAccounts(..))", throwing="exception")
+	public void afterThrowingFindAccountAdvice(JoinPoint joinPoint, Throwable exception) {
+		
+		System.out.println("LOGGING --> Executing AfterReturning Advice: " + joinPoint.getSignature().toShortString());
+		
+		System.out.println("LOGGING --> Executing AfterReturning Advice: " + exception.getMessage());	
+		
 	}
 	
 	

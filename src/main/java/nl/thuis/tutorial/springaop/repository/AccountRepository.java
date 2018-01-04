@@ -23,7 +23,11 @@ public class AccountRepository {
 		System.out.println(getClass() + " : Add Account to DB with Account Param");
 	}
 	
-	public List<Account> findAccounts() {
+	public List<Account> findAccounts(boolean tripWire) {
+		
+		if(tripWire) {
+			throw new RuntimeException("No Soup For You!");
+		}
 		
 		List<Account> accounts = new ArrayList<>();
 		
