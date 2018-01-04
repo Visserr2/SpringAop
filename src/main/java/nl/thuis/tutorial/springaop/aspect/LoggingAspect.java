@@ -3,6 +3,7 @@ package nl.thuis.tutorial.springaop.aspect;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -83,9 +84,9 @@ public class LoggingAspect {
 	@AfterReturning(pointcut="execution(* nl.thuis.tutorial.springaop.repository.AccountRepository.findAccounts(..))", returning="result")
 	public void afterReturningFindAccountAdvice(JoinPoint joinPoint, List<Account> result) {
 		
-		System.out.println("LOGGING --> Executing AfterReturning Advice: " + joinPoint.getSignature().toShortString());
+		System.out.println("LOGGING --> Executing After Method Successfully Advice: " + joinPoint.getSignature().toShortString());
 		
-		System.out.println("LOGGING --> Executing AfterReturning Advice: " + result);	
+		System.out.println("LOGGING --> Executing After Method Successfully Advice: " + result);	
 		
 		// Change result from the method and gives new answer back to calling application
 		if(!result.isEmpty()) {
@@ -101,14 +102,29 @@ public class LoggingAspect {
 	 * @param joinPoint contains metadata of the method (signature and params)
 	 * @param exception contains the exception that is thrown. This param must match with the throwing-variable
 	 * In AfterThrowing only the exception can be logged and seen. Use the AroundAdvice for catching and process the exception
+	 * The AfterThrowing runs always as last, even after the After-advice
 	 */
 	@AfterThrowing(pointcut="execution(* nl.thuis.tutorial.springaop.repository.AccountRepository.findAccounts(..))", throwing="exception")
 	public void afterThrowingFindAccountAdvice(JoinPoint joinPoint, Throwable exception) {
 		
-		System.out.println("LOGGING --> Executing AfterReturning Advice: " + joinPoint.getSignature().toShortString());
+		System.out.println("LOGGING --> Executing After Method Exception Advice: " + joinPoint.getSignature().toShortString());
 		
-		System.out.println("LOGGING --> Executing AfterReturning Advice: " + exception.getMessage());	
+		System.out.println("LOGGING --> Executing After Method Exception Advice: " + exception.getMessage());	
 		
+	}
+	
+	/**
+	 * Start this advice afther the findAccount-method regardless success or not
+	 * It is not possible to intercept the exception
+	 * Also the @After annotation works as a finally-block and thus is executed after the method but before AfterThrowing or AfterReturning
+	 * @param joinPoint
+	 * @param exception
+	 */
+	@After("execution(* nl.thuis.tutorial.springaop.repository.AccountRepository.findAccounts(..))")
+	public void afterFinallyFindAccountAdvice(JoinPoint joinPoint) {
+		
+		System.out.println("LOGGING --> Executing After Finally Method Exception Advice: " + joinPoint.getSignature().toShortString());
+				
 	}
 	
 	
