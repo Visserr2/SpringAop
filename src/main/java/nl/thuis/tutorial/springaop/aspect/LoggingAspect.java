@@ -15,7 +15,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import nl.thuis.tutorial.springaop.AroundMainApp;
 import nl.thuis.tutorial.springaop.bean.Account;
 
 @Aspect
@@ -140,6 +139,13 @@ public class LoggingAspect {
 	
 	//////// AROUND ADVICE ////////////
 
+	/**
+	 * This advice is executed before and after the getFortune() method. Regardless success or not
+	 * Also you can rethrow, catch, swallow or stop an exception if it occurs
+	 * @param pjp
+	 * @return
+	 * @throws Throwable
+	 */
 	@Around("execution(* nl.thuis.tutorial.springaop.service.TrafficFortuneService.getFortune(..))")
 	public Object aroundGetFortune(ProceedingJoinPoint pjp) throws Throwable {
 		
@@ -147,9 +153,22 @@ public class LoggingAspect {
 		
 		long start = System.currentTimeMillis();
 		
-		// execute the method
-		Object result = pjp.proceed();
+		Object result = null;
 		
+		try {
+			// execute the method
+			result = pjp.proceed();
+		} catch (Exception e) {
+			// log the exception
+			logger.warning(e.getMessage());
+			
+			// give default answer when exception is catched
+			result = "Major accident! But everything is already fixed.";
+			
+			// retrow exception
+			// throw e;
+		}
+	
 		long end = System.currentTimeMillis();
 		
 		long time = end - start;

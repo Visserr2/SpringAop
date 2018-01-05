@@ -20,9 +20,15 @@ public class AroundMainApp {
 		TrafficFortuneService trafficFortune = config.getBean("trafficFortuneService", TrafficFortuneService.class);
 		logger.info("Start AroundMainApp\n");
 		
-		// Calling getFortune
+		// Calling getFortune, give true for exception
+		logger.info("Calling normal getFortune()");
 		String data = trafficFortune.getFortune();
-		logger.info(data);
+		logger.info(data + "\n");
+		
+		// Calling getFortune, give true for exception
+		logger.info("Calling exeption getFortune()");
+		data = trafficFortune.getFortune(true);
+		logger.info(data + "\n");
 
 		// Closing context
 		logger.info("Ending AroundMainApp");
